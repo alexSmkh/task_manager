@@ -8,7 +8,7 @@ dc-build:
 	docker compose build
 
 dc-api-bash:
-	docker compose run --rm --service-ports api /bin/bash
+	docker compose run --rm api /bin/bash
 
 dc-api-migrate:
 	docker compose run --rm api bash -c 'python manage.py migrate'
