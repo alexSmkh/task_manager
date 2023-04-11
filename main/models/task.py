@@ -1,5 +1,7 @@
 from django.db import models
 
+from main.models.tag import Tag
+
 
 class Task(models.Model):
 
@@ -32,6 +34,7 @@ class Task(models.Model):
     deadline = models.DateTimeField()
     state = models.CharField(max_length=50, choices=StateChoice.choices, default=StateChoice.NEW_TASK)
     priority = models.PositiveSmallIntegerField(choices=PriorityChoice.choices, default=PriorityChoice.HIGH)
+    tags = models.ManyToManyField(Tag, related_name='tasks')
 
     class Meta:
         ordering = ['priority']
