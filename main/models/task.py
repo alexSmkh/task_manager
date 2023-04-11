@@ -1,5 +1,6 @@
 from django.db import models
 
+from main.models.user import User
 from main.models.tag import Tag
 
 
@@ -35,6 +36,8 @@ class Task(models.Model):
     state = models.CharField(max_length=50, choices=States.choices, default=States.NEW_TASK)
     priority = models.PositiveSmallIntegerField(choices=Priorities.choices, default=Priorities.HIGH)
     tags = models.ManyToManyField(Tag, related_name='tasks')
+    assigned = models.ForeignKey(User, related_name='assigned_tasks', on_delete=models.CASCADE, null=True, blank=True)
+    author = models.ForeignKey(User, related_name='created_tasks', on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['priority']
