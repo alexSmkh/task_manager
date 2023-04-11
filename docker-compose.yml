@@ -19,6 +19,7 @@ services:
       DATABASE_PASSWORD: postgres
       DATABASE_HOST: db
       DATABASE_PORT: 5432
+      SECRET_KEY: django-insecure-l$eloq)i!(zr8yb0vu6nu-zv@h+bh0fkp6^ad7qg7x1c3zm4uh
     command: python manage.py runserver 0.0.0.0:8000
 
   db:

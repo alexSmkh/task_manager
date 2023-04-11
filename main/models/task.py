@@ -1,11 +1,10 @@
 from django.db import models
 
-from main.models.user import User
 from main.models.tag import Tag
+from main.models.user import User
 
 
 class Task(models.Model):
-
     class States(models.TextChoices):
         NEW_TASK = 'new'
         IN_DEVELOPMENT = 'in development'
@@ -36,7 +35,13 @@ class Task(models.Model):
     state = models.CharField(max_length=50, choices=States.choices, default=States.NEW_TASK)
     priority = models.PositiveSmallIntegerField(choices=Priorities.choices, default=Priorities.HIGH)
     tags = models.ManyToManyField(Tag, related_name='tasks')
-    assigned = models.ForeignKey(User, related_name='assigned_tasks', on_delete=models.CASCADE, null=True, blank=True)
+    assigned = models.ForeignKey(
+        User,
+        related_name='assigned_tasks',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
     author = models.ForeignKey(User, related_name='created_tasks', on_delete=models.CASCADE)
 
     class Meta:
@@ -48,7 +53,7 @@ class Task(models.Model):
             models.Index(fields=['priority']),
         ]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Task: {self.title}'
 
     def to_development(self) -> bool:
