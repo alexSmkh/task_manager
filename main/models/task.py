@@ -54,7 +54,7 @@ class Task(models.Model):
         ]
 
     def __str__(self) -> str:
-        return f'Task: {self.title}'
+        return self.title
 
     def to_development(self) -> bool:
         if self.States.IN_DEVELOPMENT in self.StateTransitions[self.state]:
