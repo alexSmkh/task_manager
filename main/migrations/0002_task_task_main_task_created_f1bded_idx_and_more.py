@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('main', '0001_initial'),
     ]
@@ -13,14 +12,40 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Task',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('title', models.CharField(max_length=150)),
                 ('description', models.TextField()),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True, null=True)),
                 ('deadline', models.DateTimeField()),
-                ('state', models.CharField(choices=[('new', 'New Task'), ('in development', 'In Development'), ('in qa', 'In Qa'), ('in code review', 'In Code Review'), ('ready for release', 'Ready For Release'), ('released', 'Released'), ('archived', 'Archived')], default='new', max_length=50)),
-                ('priority', models.PositiveSmallIntegerField(choices=[(1, 'High'), (2, 'Low')], default=1)),
+                (
+                    'state',
+                    models.CharField(
+                        choices=[
+                            ('new', 'New Task'),
+                            ('in development', 'In Development'),
+                            ('in qa', 'In Qa'),
+                            ('in code review', 'In Code Review'),
+                            ('ready for release', 'Ready For Release'),
+                            ('released', 'Released'),
+                            ('archived', 'Archived'),
+                        ],
+                        default='new',
+                        max_length=50,
+                    ),
+                ),
+                (
+                    'priority',
+                    models.PositiveSmallIntegerField(choices=[(1, 'High'), (2, 'Low')], default=1),
+                ),
             ],
             options={
                 'ordering': ['priority'],

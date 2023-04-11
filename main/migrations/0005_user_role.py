@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('main', '0004_tag_tag_main_tag_title_329360_idx_task_tags'),
     ]
@@ -13,6 +12,10 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='role',
-            field=models.CharField(choices=[('developer', 'Developer'), ('manager', 'Manager'), ('admin', 'Admin')], default='developer', max_length=255),
+            field=models.CharField(
+                choices=[('developer', 'Developer'), ('manager', 'Manager'), ('admin', 'Admin')],
+                default='developer',
+                max_length=255,
+            ),
         ),
     ]

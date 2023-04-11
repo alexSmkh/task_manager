@@ -9,5 +9,5 @@ class Tag(models.Model):
             models.Index(fields=['title']),
         ]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title
