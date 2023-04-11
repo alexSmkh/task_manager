@@ -5,7 +5,7 @@ from main.models.tag import Tag
 
 class Task(models.Model):
 
-    class StateChoice(models.TextChoices):
+    class States(models.TextChoices):
         NEW_TASK = 'new'
         IN_DEVELOPMENT = 'in development'
         IN_QA = 'in qa'
@@ -14,17 +14,17 @@ class Task(models.Model):
         RELEASED = 'released'
         ARCHIVED = 'archived'
 
-    class PriorityChoice(models.IntegerChoices):
+    class Priorities(models.IntegerChoices):
         HIGH = 1, 'high'
         LOW = 2, 'low'
 
     StateTransitions = {
-        StateChoice.NEW_TASK: (StateChoice.IN_DEVELOPMENT, StateChoice.ARCHIVED),
-        StateChoice.IN_DEVELOPMENT: (StateChoice.IN_QA,),
-        StateChoice.IN_QA: (StateChoice.IN_DEVELOPMENT, StateChoice.IN_CODE_REVIEW),
-        StateChoice.IN_CODE_REVIEW: (StateChoice.IN_DEVELOPMENT, StateChoice.READY_FOR_RELEASE),
-        StateChoice.RELEASED: (StateChoice.ARCHIVED,),
-        StateChoice.ARCHIVED: (),
+        States.NEW_TASK: (States.IN_DEVELOPMENT, States.ARCHIVED),
+        States.IN_DEVELOPMENT: (States.IN_QA,),
+        States.IN_QA: (States.IN_DEVELOPMENT, States.IN_CODE_REVIEW),
+        States.IN_CODE_REVIEW: (States.IN_DEVELOPMENT, States.READY_FOR_RELEASE),
+        States.RELEASED: (States.ARCHIVED,),
+        States.ARCHIVED: (),
     }
 
     title = models.CharField(max_length=150)
@@ -32,8 +32,8 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
     deadline = models.DateTimeField()
-    state = models.CharField(max_length=50, choices=StateChoice.choices, default=StateChoice.NEW_TASK)
-    priority = models.PositiveSmallIntegerField(choices=PriorityChoice.choices, default=PriorityChoice.HIGH)
+    state = models.CharField(max_length=50, choices=States.choices, default=States.NEW_TASK)
+    priority = models.PositiveSmallIntegerField(choices=Priorities.choices, default=Priorities.HIGH)
     tags = models.ManyToManyField(Tag, related_name='tasks')
 
     class Meta:
@@ -49,46 +49,46 @@ class Task(models.Model):
         return f'Task: {self.title}'
 
     def to_development(self) -> bool:
-        if self.StateChoice.IN_DEVELOPMENT in self.StateTransitions[self.state]:
-            self.state = self.StateChoice.IN_DEVELOPMENT
+        if self.States.IN_DEVELOPMENT in self.StateTransitions[self.state]:
+            self.state = self.States.IN_DEVELOPMENT
             self.save()
             return True
         return False
 
     def to_qa(self) -> bool:
-        if self.StateChoice.IN_QA in self.StateTransitions[self.state]:
-            self.state = self.StateChoice.IN_QA
+        if self.States.IN_QA in self.StateTransitions[self.state]:
+            self.state = self.States.IN_QA
             self.save()
             return True
         return False
 
     def to_code_review(self) -> bool:
-        if self.StateChoice.IN_CODE_REVIEW in self.StateTransitions[self.state]:
-            self.state = self.StateChoice.IN_CODE_REVIEW
+        if self.States.IN_CODE_REVIEW in self.StateTransitions[self.state]:
+            self.state = self.States.IN_CODE_REVIEW
             self.save()
             return True
         return False
 
     def to_ready_for_release(self) -> bool:
-        if self.StateChoice.READY_FOR_RELEASE in self.StateTransitions[self.state]:
-            self.state = self.StateChoice.READY_FOR_RELEASE
+        if self.States.READY_FOR_RELEASE in self.StateTransitions[self.state]:
+            self.state = self.States.READY_FOR_RELEASE
             self.save()
             return True
         return False
 
     def to_release(self) -> bool:
-        if self.StateChoice.RELEASED in self.StateTransitions[self.state]:
-            self.state = self.StateChoice.RELEASED
+        if self.States.RELEASED in self.StateTransitions[self.state]:
+            self.state = self.States.RELEASED
             self.save()
             return True
         return False
 
     def to_archive(self) -> bool:
-        if self.StateChoice.ARCHIVED in self.StateTransitions[self.state]:
-            self.state = self.StateChoice.ARCHIVED
+        if self.States.ARCHIVED in self.StateTransitions[self.state]:
+            self.state = self.States.ARCHIVED
             self.save()
             return True
         return False
 
-    def get_possible_transitions(self) -> tuple[StateChoice]:
+    def get_possible_transitions(self) -> tuple[States]:
         return self.StateTransitions[self.state]
