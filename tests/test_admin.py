@@ -14,7 +14,7 @@ class TestAdmin(APITestCase):
     admin: User
 
     @classmethod
-    def setUpTestData(cls) -> None:
+    def setUpTestData(cls: type['TestAdmin']) -> None:
         super().setUpTestData()
         cls.admin = User.objects.create_superuser("tests@tests.ru", email=None, password=None)
         cls.client = APIClient()
@@ -22,13 +22,13 @@ class TestAdmin(APITestCase):
 
     @classmethod
     def assert_forms(
-        cls,
+        cls: type['TestAdmin'],
         model: type[models.Model],
         key: int,
         check_actions: Container = (),
     ) -> None:
-        app_label = model._meta.app_label
-        model_name = model._meta.model_name
+        app_label = model._meta.app_label  # noqa: SLF001
+        model_name = model._meta.model_name  # noqa: SLF001
 
         actions = {"changelist": [], "add": [], "change": (key,)}
         if check_actions:
