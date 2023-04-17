@@ -8,12 +8,18 @@ authors = ["dbp"]
 python = "^3.9"
 django = "^4.1.6"
 psycopg2-binary = "^2.9.5"
+djangorestframework = "^3.14.0"
 
 [tool.poetry.dev-dependencies]
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.0.261"
+pytest-django = "^4.5.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "task_manager.settings"
+python_files = ["test_*.py"]
